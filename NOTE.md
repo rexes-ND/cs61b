@@ -56,3 +56,31 @@ java (interpreter) -> ...
 Reason for creating `class` file:
 - .class file has been type checked.
 - .class files are 'simpler' for machine to execute.
+
+Classes in Java
+- To run a class, we must define a main method. 
+    - Not all classes have a main method.
+- Classes can contain data.
+- Classes can be instantiated as objects.
+- Non-static method - Instance method
+- Static method - Class method in Python
+- Unlike Python, we cannot dynamically add new attribute to objects.
+
+Arrays in Java
+
+To create an array of objects:
+- Use `new` keyword to create an array.
+- Use `new` again for each object that is added to an array.
+
+Difference between Static vs Non-Static
+- Static methods are called using the class name.
+- Instance methods are invoked using an instance name.
+
+Some classes are never instantiated. (e.g. Math.sqrt(100))
+
+Some classes may have a mix of static and non-static methods.
+
+Best practice: Avoid static variables whose values change.
+
+A good foundational computer science course should primarily
+teach you to properly manage complexity.
