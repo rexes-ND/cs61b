@@ -92,9 +92,12 @@ public class Model {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
-
-
+        int sz = b.size();
+        for (int col = 0; col < sz; ++col) {
+            for (int row = 0; row < sz; ++row) {
+                if (b.tile(col, row) == null) return true;
+            }
+        }
         return false;
     }
 
@@ -104,9 +107,13 @@ public class Model {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
-
-
+        int sz = b.size();
+        for (int col = 0; col < sz; ++col) {
+            for (int row = 0; row < sz; ++row) {
+                Tile tile = b.tile(col, row);
+                if (tile != null && tile.value() == MAX_PIECE) return true;
+            }
+        }
         return false;
     }
 
@@ -117,9 +124,22 @@ public class Model {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
-
-
+        if (emptySpaceExists(b)) return true;
+        int sz = b.size();
+        for (int col = 0; col < sz; ++col) {
+            for (int row = 0; row < sz-1; ++row) {
+                if (b.tile(col, row).value() == b.tile(col, row+1).value()) {
+                    return true;
+                }
+            }
+        }
+        for (int col = 0; col < sz-1; ++col) {
+            for (int row = 0; row < sz; ++row) {
+                if (b.tile(col, row).value() == b.tile(col+1, row).value()) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -136,10 +156,42 @@ public class Model {
      *    and the trailing tile does not.
      * */
     public void tilt(Side side) {
-        // TODO: Modify this.board (and if applicable, this.score) to account
-        // for the tilt to the Side SIDE.
+        board.setViewingPerspective(side);
 
+        int sz = board.size();
+        for (int col = 0; col < sz; ++col) {
+            int lastRow = sz;
+            int lastValue = -1;
+            boolean merged = true;
+            for (int row = sz-1; row >= 0; --row) {
+                Tile curTile = board.tile(col, row);
+                if (curTile == null) continue;
+                if (merged) {
+                    if (lastRow - 1 > row) {
+                        // move to lastRow - 1 
+                        board.move(col, lastRow - 1, curTile);
+                    }
+                    lastRow--;
+                    lastValue = board.tile(col, lastRow).value();
+                    merged = false;
+                }
+                else {
+                    if (lastValue == curTile.value()) {
+                        board.move(col, lastRow, curTile);
+                        score += board.tile(col, lastRow).value();
+                        merged = true;
+                    } else {
+                        if (lastRow - 1 > row) {
+                            board.move(col, lastRow - 1, curTile);
+                        }
+                        lastRow--;
+                        lastValue = board.tile(col, lastRow).value();
+                    }
+                }
+            }
+        }
 
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
     }
 
