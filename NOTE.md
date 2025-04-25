@@ -84,3 +84,74 @@ Best practice: Avoid static variables whose values change.
 
 A good foundational computer science course should primarily
 teach you to properly manage complexity.
+
+Primitive types in Java
+
+8 primitive types: byte, short, int, long,
+float, double, boolean, char
+
+Everything else, including arrays, is a `reference type`.
+
+When you declare a variable of a certain type in Java:
+- The machine sets aside exactly enough bits to hold a thing of
+that type.
+- Java creates an internal table that maps each variable name to a
+location.
+- Java does not write anything into the reserved boxes.
+
+When you declare a variable of any reference type
+- Java allocates exactly a box of size 64 bits, no matter what type
+of object.
+- These bits can be set either to:
+    - `null` (all zeros)
+    - The 64 bit "address" of a specific instance of that class
+(returned by `new`).
+
+`The Golden Rule of Equals`:
+Given variables y and x:
+- `y = x` copies all the bits from x into y.
+
+Parameter passing obeys the same rule:
+Simply copy the bits to the new scope.
+
+Class Instantiations in Java
+
+When the object is instantiated,
+- Java first allocates a box of bits for each instance variable of
+the class and fills them with a default value. (e.g 0, null)
+- The constructor then usually fills every such box with some other
+value.
+
+Can think of `new` as returning the address of the newly created
+object.
+
+Arrays are also Objects. Objects are usually instantiated using the
+`new` keyword.
+```
+int[] x = new int[]{0, 1, 2, 95, 4};
+int[] a;
+```
+
+Arrays are a special kind of object which consists of a numbered
+sequence of memory boxes.
+- To get i-th item of array A, use A[i].
+- Unlike class instances which have named memory boxes.
+
+Hide implementation details from users of your class.
+- Less for user of class to understand.
+- Safe to change implementations of private methods
+
+Nested classes are useful when a class don't stand on its own and
+is obviously subordinate to another class.
+
+If the nested class never uses any instance variables or methods of
+the outer class, declare it static.
+
+An invariant is a condition that is guarenteed to be true during
+code execution.
+
+Invariants make it easier to reason about code:
+- Can assume they are true to simplify code.
+- Must ensure that methods preserve invariants.
+
+
